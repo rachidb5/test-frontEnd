@@ -2,16 +2,9 @@
   <div>
     <div>
       <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
+        <TableHeader />
         <tbody>
-          <tr>
+          <!--tr>
             <th scope="row">1</th>
             <td>Mark</td>
             <td>Otto</td>
@@ -27,9 +20,40 @@
             <th scope="row">3</th>
             <td colspan="2">Larry the Bird</td>
             <td>@twitter</td>
-          </tr>
+          </tr-->
         </tbody>
       </table>
     </div>
   </div>
 </template>
+<script>
+import { defineComponent } from "@vue/composition-api";
+import api from "@/config/constants";
+import TableHeader from '@/components/TableHeader';
+
+export default defineComponent({
+  setup() {},
+  components: { TableHeader },
+  data(){
+      return{
+          usersList: []
+      }
+  },
+  created() {
+    this.getProducts();
+  },
+  methods: {
+    getProducts() {
+      api
+        .get("/users")
+        .then((res) => {
+          console.log(res.data[0].users);
+          this.usersList = res.data[0].users;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+});
+</script>
