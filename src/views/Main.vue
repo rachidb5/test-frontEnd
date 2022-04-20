@@ -4,6 +4,17 @@
       <table class="table">
         <TableHeader />
         <tbody>
+          <TableLine
+            v-for="u in usersList"
+            :image="u.profile_image"
+            :key="u.name"
+            :nome="u.name"
+            :email="u.email"
+            :status="u.active"
+            :funcao="u.role"
+            :cargo="u.occupation"
+            :setor="u.department"
+          />
           <!--tr>
             <th scope="row">1</th>
             <td>Mark</td>
@@ -29,15 +40,15 @@
 <script>
 import { defineComponent } from "@vue/composition-api";
 import api from "@/config/constants";
-import TableHeader from '@/components/TableHeader';
-
+import TableHeader from "@/components/TableHeader";
+import TableLine from "@/components/TableLine";
 export default defineComponent({
   setup() {},
-  components: { TableHeader },
-  data(){
-      return{
-          usersList: []
-      }
+  components: { TableHeader, TableLine },
+  data() {
+    return {
+      usersList: [],
+    };
   },
   created() {
     this.getProducts();
@@ -48,7 +59,9 @@ export default defineComponent({
         .get("/users")
         .then((res) => {
           console.log(res.data[0].users);
-          this.usersList = res.data[0].users;
+          localStorage.setItem("users", JSON.stringify(res.data[0].users));
+          this.usersList = JSON.parse(localStorage.getItem("users"));
+          console.log(this.usersList);
         })
         .catch((error) => {
           console.log(error);
