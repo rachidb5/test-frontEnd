@@ -1,5 +1,6 @@
 import Main from '@/views/Main.vue'
 import User from '@/views/User.vue'
+import EditUser from '@/views/EditUser.vue'
 
 const routes = [
     {
@@ -9,8 +10,13 @@ const routes = [
     },
     {
         path: '/usuario',
-        name: '',
+        name: 'Usuario',
         component: User,
+    },
+    {
+        path: '/usuario/:id',
+        name: 'EditarUsuario',
+        component:EditUser,
     },
 ]
 
