@@ -13,22 +13,33 @@
           :funcao="u.role"
           :cargo="u.occupation"
           :setor="u.department"
-          :userID="i"
+          :userID="i.toString()"
         />
       </tbody>
     </table>
     <div class="responsive-table">
+      <h1 class="title">Usuários</h1>
       <responsive-table-card
-        v-for="u in usersList"
+        v-for="(u, i) in usersList"
         :key="u.name"
+        :image="u.profile_image"
         :nome="u.name"
         :email="u.email"
+        :cargo="u.occupation"
+        :setor="u.department"
+        :status="u.active"
+        :funcao="u.role"
+        :userID="i.toString()"
       />
     </div>
     <Footer :text="'Novo'" :onclick="createNewUser" />
   </div>
 </template>
 <style scoped>
+.title {
+  text-align: left;
+  margin-left: 5%;
+}
 .main-container {
   height: 100vh;
 }
