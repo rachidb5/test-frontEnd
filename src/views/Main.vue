@@ -1,68 +1,70 @@
 <template>
   <div class="main-container">
-      <table class="table">
-        <TableHeader />
-        <tbody>
-          <TableLine
-            v-for="u, i in usersList"
-            :image="u.profile_image"
-            :key="u.name"
-            :nome="u.name"
-            :email="u.email"
-            :status="u.active"
-            :funcao="u.role"
-            :cargo="u.occupation"
-            :setor="u.department"
-            :userID="i"
-          />
-        </tbody>
-      </table>
-      <div class="responsive-table">
-      <responsive-table-card  v-for="u in usersList" :key="u.name" :nome="u.name"/>
-      </div>
-     <Footer
-     :text="'Novo'"
-     :onclick="createNewUser"
+    <table class="table">
+      <TableHeader />
+      <tbody>
+        <TableLine
+          v-for="(u, i) in usersList"
+          :image="u.profile_image"
+          :key="u.name"
+          :nome="u.name"
+          :email="u.email"
+          :status="u.active"
+          :funcao="u.role"
+          :cargo="u.occupation"
+          :setor="u.department"
+          :userID="i"
+        />
+      </tbody>
+    </table>
+    <div class="responsive-table">
+      <responsive-table-card
+        v-for="u in usersList"
+        :key="u.name"
+        :nome="u.name"
+        :email="u.email"
       />
+    </div>
+    <Footer :text="'Novo'" :onclick="createNewUser" />
   </div>
 </template>
 <style scoped>
-.main-container{
-  height:100vh;
+.main-container {
+  height: 100vh;
 }
-.new-user-div{
+.new-user-div {
   margin-right: 0;
   margin-left: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background: #F9FAFB;
+  background: #f9fafb;
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
 
-table{
-  background: #E5E7EB;
+table {
+  background: #e5e7eb;
 }
-tbody{
+tbody {
   background: white;
 }
-tr{
+tr {
   padding: 0;
-  margin: 0
+  margin: 0;
 }
 table {
   border-collapse: collapse;
-  background: #E5E7EB;
+  background: #e5e7eb;
   width: 100%;
 }
 @media (min-width: 600px) {
-  .responsive-table{
+  .responsive-table {
     display: none;
   }
 }
 @media (max-width: 600px) {
-  .table{
+  .table {
     display: none;
   }
 }
@@ -87,11 +89,14 @@ export default defineComponent({
     this.getProducts();
   },
   methods: {
-     createNewUser() {
+    createNewUser() {
       this.$router.push({ path: "/usuario" });
     },
     getProducts() {
-      if (localStorage.getItem("users") && localStorage.getItem("firstaccessverifytoken")) {
+      if (
+        localStorage.getItem("users") &&
+        localStorage.getItem("firstaccessverifytoken")
+      ) {
         this.usersList = JSON.parse(localStorage.getItem("users"));
       }
       api
@@ -101,7 +106,10 @@ export default defineComponent({
           localStorage.setItem("users", JSON.stringify(res.data[0].users));
           this.usersList = JSON.parse(localStorage.getItem("users"));
           console.log(this.usersList);
-           localStorage.setItem("firstaccessverifytoken", 'primeiro acesso já efetuado')
+          localStorage.setItem(
+            "firstaccessverifytoken",
+            "primeiro acesso já efetuado"
+          );
         })
         .catch((error) => {
           console.log(error);
