@@ -79,15 +79,15 @@ export default defineComponent({
   background: #D1FAE5;
   color: #065F46;
   font-size: 14px;
-  padding-top: .2rem;
-  padding-bottom: .2rem;
+  padding-top: .3rem;
+  padding-bottom: .3rem;
 }
 .notactive{
   background: #FFE2E3;
   color: #991B1B;
   font-size: 14px;
-  padding-top: .2rem;
-  padding-bottom: .2rem;
+  padding-top: .3rem;
+  padding-bottom: .3rem;
 }
 .activity{
   margin-left: auto;
@@ -135,9 +135,7 @@ h3, h5{
   margin: 0 !important;
   text-align: start;
 }
-tr{
-  padding: 1.5rem;
-}
+
 td{
   width: 15%;
   font-family: 'Roboto';  
@@ -145,9 +143,7 @@ td{
   font-weight: 500;
   font-size: 14px;
   color: #6B7280;
-  padding: 1.5rem 0 1.5rem 1.5rem;
-  padding-top:1.5rem;
-  padding-bottom:1.5rem;
+  padding: 2rem 0 2rem 1.5rem;
   border-bottom: 1px solid #E5E7EB;
 }
 </style>

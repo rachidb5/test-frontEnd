@@ -18,7 +18,7 @@
     font-size: 12px;
     text-transform: uppercase;
     color: #6B7280;
-    padding: 1.5rem;
+    padding: 2rem;
   }
   tr{
     background: #F9FAFB;

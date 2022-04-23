@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-container">
       <table class="table">
         <TableHeader />
         <tbody>
@@ -17,6 +17,9 @@
           />
         </tbody>
       </table>
+      <div class="responsive-table">
+      <responsive-table-card  v-for="u in usersList" :key="u.name" :nome="u.name"/>
+      </div>
      <Footer
      :text="'Novo'"
      :onclick="createNewUser"
@@ -24,6 +27,9 @@
   </div>
 </template>
 <style scoped>
+.main-container{
+  height:100vh;
+}
 .new-user-div{
   margin-right: 0;
   margin-left: 0;
@@ -50,6 +56,11 @@ table {
   background: #E5E7EB;
   width: 100%;
 }
+@media (min-width: 600px) {
+  .responsive-table{
+    display: none;
+  }
+}
 @media (max-width: 600px) {
   .table{
     display: none;
@@ -62,10 +73,11 @@ import api from "@/config/constants";
 import TableHeader from "@/components/TableHeader";
 import TableLine from "@/components/TableLine";
 import Footer from "../components/Footer.vue";
+import ResponsiveTableCard from "../components/ResponsiveTableCard.vue";
 
 export default defineComponent({
   setup() {},
-  components: { TableHeader, TableLine, Footer },
+  components: { TableHeader, TableLine, Footer, ResponsiveTableCard },
   data() {
     return {
       usersList: [],

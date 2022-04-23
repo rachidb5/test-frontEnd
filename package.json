@@ -14,12 +14,14 @@
     "v-mask": "^2.3.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vue-the-mask": "^0.11.1",
     "vuetify": "^2.4.0",
     "vuex": "^3.6.2",
     "vuex-persist": "^3.1.3",
     "vuex-persistedstate": "^4.0.0-beta.3"
   },
   "devDependencies": {
+    "@mdi/font": "^6.6.96",
     "@vue/cli-plugin-babel": "~4.5.15",
     "@vue/cli-plugin-eslint": "~4.5.15",
     "@vue/cli-service": "~4.5.15",
