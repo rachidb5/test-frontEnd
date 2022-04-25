@@ -2,15 +2,30 @@
   <div>
     <div class="form-div">
       <form>
-        <div class="form-line">
+        <div class="form-line foto-div">
           <div class="input-div">
-            <label for="nome">Imagem</label>
-            <input
-              type="url"
-              name="nome"
-              v-model="imagem"
-              placeholder="Digite o nome"
-            />
+            <label for="nome">Foto</label>
+            <div class="form-line foto-line">
+              <img :src="imagem" v-if="imagem !== ''" />
+              <button
+                type="button"
+                class="change-img"
+                @click="
+                  () => {
+                    showImgInput = !showImgInput;
+                  }
+                "
+              >
+                Modificar
+              </button>
+              <input
+                v-if="showImgInput"
+                type="url"
+                name="nome"
+                v-model="imagem"
+                placeholder="Digite o nome"
+              />
+            </div>
           </div>
         </div>
         <div class="form-line">
@@ -47,32 +62,82 @@
             </select>
           </div>
         </div>
-        <div class="input-div">
-          <label>Função</label>
-          <select v-model="funcao">
-            <option v-for="f in funcaoList" :key="f">{{ f }}</option>
-          </select>
+        <div class="form-line">
+          <div class="input-div">
+            <label>Função</label>
+            <select v-model="funcao">
+              <option v-for="f in funcaoList" :key="f">{{ f }}</option>
+            </select>
+          </div>
+          <div class="input-div">
+            <label class="switch">
+              <input v-model="ativo" type="checkbox" />
+              <span class="slider round"></span>
+            </label>
+          </div>
         </div>
-        <label class="switch">
-          <input v-model="ativo" type="checkbox">
-          <span class="slider round"></span>
-        </label>
+        <div class="form-line foto-div">
+          <div class="input-div">
+            <button v-if="!newUser" @click="deleteUser" class="delete-user">
+              Excluir Usuario
+            </button>
+          </div>
+        </div>
       </form>
-      <button v-if="!newUser" @click="deleteUser">Excluir Usuario</button>
     </div>
     <Footer :text="textButton" :onclick="handleClick" />
   </div>
 </template>
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
-
+button {
+  max-height: 2.5rem;
+}
+.change-img {
+  background: white;
+  border: 1px solid #c4c4c4;
+  border-radius: 4px;
+}
+.foto-div {
+  justify-content: start !important;
+  padding-bottom: 2rem;
+  padding-left: 7%;
+}
+.foto-line {
+  justify-content: start !important;
+  padding-top: 1rem;
+}
+.delete-user {
+  border: none;
+  border-radius: 4px;
+  background: #e42c17;
+  color: white;
+  font-size: 16px;
+  padding: 0.5rem 0.8rem;
+  margin-right: 5%;
+  cursor: pointer;
+  margin-top: 10%;
+  max-width: 50%;
+}
+body {
+  margin-top: 0;
+}
 .form-line {
   display: flex;
   flex-direction: row;
+  justify-content: space-evenly;
 }
 .input-div {
   display: flex;
   flex-direction: column;
+  width: 350px;
+  justify-content: start;
+}
+img {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  margin-right: 0.5rem;
 }
 label {
   margin-right: auto;
@@ -82,6 +147,9 @@ label {
 }
 .form-div {
   margin-top: 10%;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
 }
 input[type="text"],
 input[type="email"],
@@ -96,22 +164,20 @@ select {
   box-sizing: border-box;
   background: white;
 }
-/* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
+  margin-right: 100%;
 }
 
-/* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* The slider */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -119,9 +185,9 @@ select {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  background-color: #e42c17;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -132,16 +198,16 @@ select {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #71b969;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #71b969;
 }
 
 input:checked + .slider:before {
@@ -150,7 +216,6 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
@@ -158,20 +223,38 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+@media (max-width: 800px) {
+  .form-line {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  .input-div {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    justify-content: start;
+  }
+  .change-img {
+    max-width: 80px;
+  }
+}
 </style>
 <script>
 import { defineComponent } from "@vue/composition-api";
 import Footer from "./Footer.vue";
+import FormHeader from "./FormHeader.vue";
 
 export default defineComponent({
-  components: { Footer },
+  components: { Footer, FormHeader },
   props: {
-    textButton: {type: String, required:true},
-    newUser: {type: Boolean, required: true}
+    textButton: { type: String, required: true },
+    newUser: { type: Boolean, required: true },
   },
   setup() {},
   data() {
     return {
+      showImgInput: false,
       data: [],
       imagem: "",
       nome: "",
@@ -192,8 +275,21 @@ export default defineComponent({
     this.setorList = this.data.map((d) => d.department);
     this.cargoList = this.data.map((d) => d.occupation);
     this.funcaoList = this.data.map((d) => d.role);
+    this.getUserData();
   },
   methods: {
+    getUserData() {
+      let usersArray = JSON.parse(localStorage.getItem("users"));
+      this.imagem = usersArray[this.$route.params.id].profile_image;
+      this.funcao = usersArray[this.$route.params.id].role;
+      this.email = usersArray[this.$route.params.id].email;
+      this.cargo = usersArray[this.$route.params.id].occupation;
+      this.setor = usersArray[this.$route.params.id].department;
+      this.nome = usersArray[this.$route.params.id].name;
+      usersArray[this.$route.params.id].active === 0
+        ? (this.ativo = false)
+        : (this.ativo = true);
+    },
     notifySuccess(msg) {
       this.$toast.success(msg, {
         timeout: 5000,
@@ -224,36 +320,42 @@ export default defineComponent({
         rtl: false,
       });
     },
-    validation(){
-      if(this.email.length < 1 || this.nome.length < 1 || this.setor.length < 1 || this.cargo.length < 1 || this.funcao.length < 1){
-         this.notifyFail("Preencha todos os campos corretamente")
+    validation() {
+      if (
+        this.email.length < 1 ||
+        this.nome.length < 1 ||
+        this.setor.length < 1 ||
+        this.cargo.length < 1 ||
+        this.funcao.length < 1
+      ) {
+        this.notifyFail("Preencha todos os campos corretamente");
         return false;
-       } else if (!this.email.includes('.') || !this.email.includes('@')){
-         this.notifyFail("Insira um email válido")
-         return false;
-       } else if(this.nome.length < 4){
-         this.notifyFail("Insira nome válido")
-         return false;
-       } else{
-         return true
-       }
+      } else if (!this.email.includes(".") || !this.email.includes("@")) {
+        this.notifyFail("Insira um email válido");
+        return false;
+      } else if (this.nome.length < 4) {
+        this.notifyFail("Insira nome válido");
+        return false;
+      } else {
+        return true;
+      }
     },
-    deleteUser(){
-      let usersArray = JSON.parse(localStorage.getItem("users"))
-      usersArray.splice(this.$route.params.id,1)
-      localStorage.setItem('users', JSON.stringify(usersArray))
-      this.notifySuccess("Usuario apagado com sucesso")
+    deleteUser() {
+      let usersArray = JSON.parse(localStorage.getItem("users"));
+      usersArray.splice(this.$route.params.id, 1);
+      localStorage.setItem("users", JSON.stringify(usersArray));
+      this.notifySuccess("Usuario apagado com sucesso");
       this.$router.push({ path: `/` });
     },
-    handleClick(){
-      if(!this.validation()){
+    handleClick() {
+      if (!this.validation()) {
         return null;
       }
-      let usersArray = JSON.parse(localStorage.getItem("users"))
+      let usersArray = JSON.parse(localStorage.getItem("users"));
       const arraySize = usersArray.length;
       let ativo = 0;
 
-      this.ativo === true ? ativo = 1 : ativo = 0
+      this.ativo === true ? (ativo = 1) : (ativo = 0);
       const newUser = {
         active: ativo,
         cpf: this.cpf,
@@ -262,25 +364,25 @@ export default defineComponent({
         name: this.nome,
         occupation: this.cargo,
         profile_image: this.imagem,
-        role: this.funcao
-      }
-      console.log(this.$route.params.id)
-      if(this.newUser){
-        usersArray = [...usersArray, newUser]
+        role: this.funcao,
+      };
+      console.log(this.$route.params.id);
+      if (this.newUser) {
+        usersArray = [...usersArray, newUser];
       } else {
-        usersArray[this.$route.params.id] = newUser
+        usersArray[this.$route.params.id] = newUser;
       }
 
-      localStorage.setItem('users', JSON.stringify(usersArray))
-      if(usersArray.length === arraySize){
-      this.notifySuccess('Usuário Atualizado Com Sucesso')
-     this.$router.push({ path: `/` });
+      localStorage.setItem("users", JSON.stringify(usersArray));
+      if (usersArray.length === arraySize) {
+        this.notifySuccess("Usuário Atualizado Com Sucesso");
+        this.$router.push({ path: `/` });
       }
-      if(usersArray.length === arraySize +1){
-      this.notifySuccess('Usuário Criado com sucesso')
-     this.$router.push({ path: `/` });
-    }
-  },
+      if (usersArray.length === arraySize + 1) {
+        this.notifySuccess("Usuário Criado com sucesso");
+        this.$router.push({ path: `/` });
+      }
+    },
   },
 });
 </script>
