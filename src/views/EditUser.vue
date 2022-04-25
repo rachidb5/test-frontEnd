@@ -1,6 +1,8 @@
 <template>
   <div>
-    <UserForm />
+    <UserForm 
+      :textButton="'Salvar'"
+      :newUser="false"/>
   </div>
 </template>
 <style scoped>

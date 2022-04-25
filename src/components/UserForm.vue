@@ -4,10 +4,11 @@
       <form>
         <div class="form-line">
           <div class="input-div">
-            <label for="nome">Nome</label>
+            <label for="nome">Imagem</label>
             <input
-              type="file"
+              type="url"
               name="nome"
+              v-model="imagem"
               placeholder="Digite o nome"
             />
           </div>
@@ -52,10 +53,14 @@
             <option v-for="f in funcaoList" :key="f">{{ f }}</option>
           </select>
         </div>
-        <v-btn-toggle></v-btn-toggle>
+        <label class="switch">
+          <input v-model="ativo" type="checkbox">
+          <span class="slider round"></span>
+        </label>
       </form>
+      <button v-if="!newUser" @click="deleteUser">Excluir Usuario</button>
     </div>
-    <Footer :text="textButton" :onclick="() => console.log('vue')" />
+    <Footer :text="textButton" :onclick="handleClick" />
   </div>
 </template>
 <style scoped>
@@ -91,6 +96,68 @@ select {
   box-sizing: border-box;
   background: white;
 }
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 </style>
 <script>
 import { defineComponent } from "@vue/composition-api";
@@ -99,17 +166,21 @@ import Footer from "./Footer.vue";
 export default defineComponent({
   components: { Footer },
   props: {
-    textButton: {type: String, required:true}
+    textButton: {type: String, required:true},
+    newUser: {type: Boolean, required: true}
   },
   setup() {},
   data() {
     return {
       data: [],
+      imagem: "",
       nome: "",
       email: "",
       setor: "",
       cargo: "",
       funcao: "",
+      ativo: "",
+      cpf: "1234567890",
       setorList: [],
       cargoList: [],
       funcaoList: [],
@@ -123,10 +194,93 @@ export default defineComponent({
     this.funcaoList = this.data.map((d) => d.role);
   },
   methods: {
-    saveUser() {
-      console.log(this.data);
-      this.data.push({});
+    notifySuccess(msg) {
+      this.$toast.success(msg, {
+        timeout: 5000,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: true,
+        rtl: false,
+      });
     },
+    notifyFail(msg) {
+      this.$toast.error(msg, {
+        timeout: 5000,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: true,
+        rtl: false,
+      });
+    },
+    validation(){
+      if(this.email.length < 1 || this.nome.length < 1 || this.setor.length < 1 || this.cargo.length < 1 || this.funcao.length < 1){
+         this.notifyFail("Preencha todos os campos corretamente")
+        return false;
+       } else if (!this.email.includes('.') || !this.email.includes('@')){
+         this.notifyFail("Insira um email válido")
+         return false;
+       } else if(this.nome.length < 4){
+         this.notifyFail("Insira nome válido")
+         return false;
+       } else{
+         return true
+       }
+    },
+    deleteUser(){
+      let usersArray = JSON.parse(localStorage.getItem("users"))
+      usersArray.splice(this.$route.params.id,1)
+      localStorage.setItem('users', JSON.stringify(usersArray))
+      this.notifySuccess("Usuario apagado com sucesso")
+      this.$router.push({ path: `/` });
+    },
+    handleClick(){
+      if(!this.validation()){
+        return null;
+      }
+      let usersArray = JSON.parse(localStorage.getItem("users"))
+      const arraySize = usersArray.length;
+      let ativo = 0;
+
+      this.ativo === true ? ativo = 1 : ativo = 0
+      const newUser = {
+        active: ativo,
+        cpf: this.cpf,
+        email: this.email,
+        department: this.setor,
+        name: this.nome,
+        occupation: this.cargo,
+        profile_image: this.imagem,
+        role: this.funcao
+      }
+      console.log(this.$route.params.id)
+      if(this.newUser){
+        usersArray = [...usersArray, newUser]
+      } else {
+        usersArray[this.$route.params.id] = newUser
+      }
+
+      localStorage.setItem('users', JSON.stringify(usersArray))
+      if(usersArray.length === arraySize){
+      this.notifySuccess('Usuário Atualizado Com Sucesso')
+     this.$router.push({ path: `/` });
+      }
+      if(usersArray.length === arraySize +1){
+      this.notifySuccess('Usuário Criado com sucesso')
+     this.$router.push({ path: `/` });
+    }
+  },
   },
 });
 </script>

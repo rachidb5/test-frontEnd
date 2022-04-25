@@ -109,6 +109,7 @@ export default defineComponent({
         localStorage.getItem("firstaccessverifytoken")
       ) {
         this.usersList = JSON.parse(localStorage.getItem("users"));
+        return null;
       }
       api
         .get("/users")
