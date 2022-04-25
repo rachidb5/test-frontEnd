@@ -1,24 +1,20 @@
 # pc4
+# Como rodar o projeto
 
-## Project setup
+## 1 - clonar o projeto para a sua máquina
+```
+git clone https://github.com/rachidb5/test-frontEnd.git
+```
+## 2 - instalar dependencias
 ```
 npm install
 ```
-
-### Compiles and hot-reloads for development
+## 3 - executar
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### porta
 ```
-npm run build
+Você deve encontrar-lo no endereço: http://localhost:8080/
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

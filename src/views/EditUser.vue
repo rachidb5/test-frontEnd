@@ -9,6 +9,17 @@
   height: 100vh;
   margin-top: -1rem;
 }
+.new-user-div {
+  margin-right: 0;
+  margin-left: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: #f9fafb;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
 </style>
 <script>
 import { defineComponent } from "@vue/composition-api";

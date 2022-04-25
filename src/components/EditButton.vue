@@ -11,6 +11,7 @@ button{
 button:hover{
     color: #2E26BD;
 }
+
 </style>
 <script>
 import { defineComponent } from '@vue/composition-api'

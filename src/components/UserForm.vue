@@ -79,7 +79,7 @@
         <div class="form-line foto-div">
           <div class="input-div">
             <button v-if="!newUser" @click="deleteUser" class="delete-user">
-              Excluir Usuario
+              Excluir
             </button>
           </div>
         </div>
@@ -92,6 +92,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
 button {
   max-height: 2.5rem;
+}
+.new-user-div {
+  margin-right: 0;
+  margin-left: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: #e5e7eb;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 .change-img {
   background: white;
@@ -114,9 +124,11 @@ button {
   color: white;
   font-size: 16px;
   padding: 0.5rem 0.8rem;
+  min-width:44px ;
   margin-right: 5%;
   cursor: pointer;
   margin-top: 10%;
+  padding-bottom: 10%;
   max-width: 50%;
 }
 body {
@@ -222,6 +234,11 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+@media (min-width: 800px) {
+.form-div{
+  height: 68vh;
+}
 }
 @media (max-width: 800px) {
   .form-line {
